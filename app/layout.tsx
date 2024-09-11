@@ -2,6 +2,7 @@
 import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 import { ConvexProvider, ConvexReactClient } from 'convex/react'
+import Navigation from './components/Navigation'
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
 
@@ -26,7 +27,11 @@ export default function RootLayout ({
             />
             <title>AI-Assisted Code Review Platform</title>
           </head>
-          <body>{children}</body>
+
+          <body>
+            <Navigation />
+            {children}
+          </body>
         </html>
       </ConvexProvider>
     </ClerkProvider>

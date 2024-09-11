@@ -1,9 +1,8 @@
-'use client';
 import React, { useState } from 'react';
-import { useConvex } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import Spinner from "../components/ui/Spinner";
-import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 
 interface AIAnalysisProps {
   code: string;
@@ -13,13 +12,13 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ code }) => {
   const [analysis, setAnalysis] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const convex = useConvex();
+  const analyzeCode = useMutation(api.reviews.analyzeCode);
 
-  const analyzeCode = async () => {
+  const handleAnalyze = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await convex.query(api.reviews.analyzeCode, { code });
+      const result = await analyzeCode({ code });
       setAnalysis(result);
     } catch (error) {
       console.error("Failed to analyze code:", error);
@@ -33,7 +32,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ code }) => {
     <div className="mt-4">
       <button
         className="px-4 py-2 bg-green-500 text-white rounded-md disabled:bg-green-300"
-        onClick={analyzeCode}
+        onClick={handleAnalyze}
         disabled={isLoading}
       >
         {isLoading ? <Spinner /> : "Analyze Code"}
