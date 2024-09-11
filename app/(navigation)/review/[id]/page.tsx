@@ -4,10 +4,11 @@ import { api } from '../../../../convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
 import CodeEditor from '../../../components/CodeEditorProps';
 import AIAnalysis from '../../../components/AIAnalysis';
+import { Id } from '../../../../convex/_generated/dataModel';
 
 export default function ReviewPage({ params }: { params: { id: string } }) {
   const { user } = useUser();
-  const snippet = useQuery(api.codeSnippets.get, { id: params.id });
+  const snippet = useQuery(api.codeSnippets.get, { id: params.id as Id<"codeSnippets"> });
 
   if (!user) {
     return <div>Please sign in to view this review.</div>;
